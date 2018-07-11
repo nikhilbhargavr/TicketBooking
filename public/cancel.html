@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>MOVIES</title>
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111;
+}
+</style>
+
+<script src="angular/angular.min.js"> </script>
+<script> var myModule = angular.module("CancelTicket",[])  </script>
+
+
+</head>
+<body ng-app = "CancelTicket">
+<h1 style = "text-align: center;">CANCEL TICKETS</h1>
+<ul>
+	<li><a href = "show.html">Movies</a></li>
+	<li><a href = "book.html">Book</a></li>
+	<li><a href = "cancel.html">Cancel</a></li>
+    <li><a href = "update_ticket.html">Update Ticket</a></li>
+	
+</ul>
+<br>
+<br>
+	<form ng-submit = "send()" ng-controller = "cancel" method = get>
+		Enter Booking ID: <input type = text name = "cancel_seat" ng-model = "data.cancel_seat">
+		<input type = submit ng-click = "Submit">
+		<input type = reset>
+        <div>{{response.data}}</div>
+	</form>
+		
+</body>
+
+<!--**********************script for handling send()*********************-->
+<script>
+     myModule.controller ("cancel",
+        function appController($scope, $http) {
+            $scope.data = {}
+            $scope.response = {}
+            
+            $scope.send = function () {
+                /*executed when submit is clicked*/          
+                console.log($scope.data.cancel_seat);
+                var posting = $http({
+                    method: 'GET',
+                    url: '/cancel_ticket',
+                    params: $scope.data,
+                    
+                }).then (function (response) {
+                    /*executed when server responds back*/
+                    console.log(response);
+                    $scope.response.data = response.data;
+                },function (error){
+                    console.log(error);
+            });
+            }
+        });
+    </script>
+
+</html>

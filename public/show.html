@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>MOVIES</title>
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111;
+}
+</style>
+
+
+<script src="angular/angular.min.js"> </script>
+<script> var myModule = angular.module("ShowMovies",[])  </script>
+
+</head>
+<body ng-app="ShowMovies">
+<h1 style = "text-align: center;">MOVIES</h1>
+<ul>
+	<li><a href = "show.html">Movies</a></li>
+	<li><a href = "book.html">Book</a></li>
+	<li><a href = "cancel.html">Cancel</a></li>
+    <li><a href = "update_ticket.html">Update Ticket</a></li>
+	
+	
+</ul>
+	<form ng-submit = "show()"  ng-controller = "showModule">
+		<label for = "movie_name">Select movie name</label>
+				<select name = "movie_name" id = "movie_name" ng-model = "data.movie_name">
+					<option value = "bahubali">Bahubali</option>
+					<option value = "transformers">Transformers</option>
+					<option value ="it">IT</option>
+				</select>
+		<input type = submit ng-click = "Submit">
+		<input type = reset>
+		<div id = "result">{{response.data}}</div>
+	</form>
+		
+</body>
+<!--**********************script for handling send()*********************-->
+<script>
+	 myModule.controller ("showModule",
+        function appController($scope, $http) {
+            $scope.data = {}
+            $scope.response = {}
+			
+            $scope.show = function () {
+                /*executed when submit is clicked*/          
+				console.log($scope.data.movie_name);
+                var posting = $http({
+                    method: 'GET',
+                    url: '/show_movies',
+                    params: $scope.data,
+                    
+                }).then (function (response) {
+                    /*executed when server responds back*/
+                    console.log(response);
+                    $scope.response.data = response.data;
+                },function (error){
+					console.log(error);
+			});
+            }
+        });
+    </script>
+
+</html>
